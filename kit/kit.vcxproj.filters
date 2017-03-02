@@ -4,6 +4,24 @@
     <Filter Include="timer">
       <UniqueIdentifier>{cad548a8-e5dc-46a8-aa1d-223939f61495}</UniqueIdentifier>
     </Filter>
+    <Filter Include="thread">
+      <UniqueIdentifier>{087223dc-2bfb-42af-bd22-c1b5e9e99c45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network">
+      <UniqueIdentifier>{55f16d1a-82e3-42fe-80f3-07f6ca9a2a72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network\tcp">
+      <UniqueIdentifier>{f37734ee-f772-4ee2-9a76-42240ac5a4f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network\http">
+      <UniqueIdentifier>{7e55d22b-8949-42de-8993-e2bc10adcfb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="buffer">
+      <UniqueIdentifier>{865e4895-9ca9-45d6-a000-c68dc865423c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="network\udp">
+      <UniqueIdentifier>{74f2e02a-7749-4065-b446-c9e918caa3e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="timer\TickCounter.h">
@@ -12,10 +30,46 @@
     <ClInclude Include="timer\Timer.h">
       <Filter>timer</Filter>
     </ClInclude>
+    <ClInclude Include="thread\CommonThread.h">
+      <Filter>thread</Filter>
+    </ClInclude>
+    <ClInclude Include="network\http\HttpRequest.h">
+      <Filter>network\http</Filter>
+    </ClInclude>
+    <ClInclude Include="network\http\HttpServer.h">
+      <Filter>network\http</Filter>
+    </ClInclude>
+    <ClInclude Include="network\tcp\TcpAcceptor.h">
+      <Filter>network\tcp</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer\Buffer.h">
+      <Filter>buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="network\udp\UdpServer.h">
+      <Filter>network\udp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timer\Timer.cpp">
       <Filter>timer</Filter>
+    </ClCompile>
+    <ClCompile Include="thread\CommonThread.cpp">
+      <Filter>thread</Filter>
+    </ClCompile>
+    <ClCompile Include="network\http\HttpRequest.cpp">
+      <Filter>network\http</Filter>
+    </ClCompile>
+    <ClCompile Include="network\http\HttpServer.cpp">
+      <Filter>network\http</Filter>
+    </ClCompile>
+    <ClCompile Include="network\tcp\TcpAcceptor.cpp">
+      <Filter>network\tcp</Filter>
+    </ClCompile>
+    <ClCompile Include="buffer\Buffer.cpp">
+      <Filter>buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="network\udp\UdpServer.cpp">
+      <Filter>network\udp</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
