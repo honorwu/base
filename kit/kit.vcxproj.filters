@@ -22,6 +22,12 @@
     <Filter Include="network\udp">
       <UniqueIdentifier>{74f2e02a-7749-4065-b446-c9e918caa3e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="log">
+      <UniqueIdentifier>{e44c9e2a-8c39-4bca-9046-f3e0ba25e6b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="measure">
+      <UniqueIdentifier>{238f38ab-0841-4ff6-8776-b51870d74114}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="timer\TickCounter.h">
@@ -48,6 +54,18 @@
     <ClInclude Include="network\udp\UdpServer.h">
       <Filter>network\udp</Filter>
     </ClInclude>
+    <ClInclude Include="log\Logger.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\LoggingModule.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="log\LogStream.h">
+      <Filter>log</Filter>
+    </ClInclude>
+    <ClInclude Include="measure\ByteSpeedMeter.h">
+      <Filter>measure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timer\Timer.cpp">
@@ -70,6 +88,18 @@
     </ClCompile>
     <ClCompile Include="network\udp\UdpServer.cpp">
       <Filter>network\udp</Filter>
+    </ClCompile>
+    <ClCompile Include="log\Logger.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\LoggingModule.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="log\LogStream.cpp">
+      <Filter>log</Filter>
+    </ClCompile>
+    <ClCompile Include="measure\ByteSpeedMeter.cpp">
+      <Filter>measure</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

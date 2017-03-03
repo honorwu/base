@@ -20,6 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buffer\Buffer.h" />
+    <ClInclude Include="log\Logger.h" />
+    <ClInclude Include="log\LoggingModule.h" />
+    <ClInclude Include="log\LogStream.h" />
+    <ClInclude Include="measure\ByteSpeedMeter.h" />
     <ClInclude Include="network\http\HttpRequest.h" />
     <ClInclude Include="network\http\HttpServer.h" />
     <ClInclude Include="network\tcp\TcpAcceptor.h" />
@@ -30,6 +34,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="buffer\Buffer.cpp" />
+    <ClCompile Include="log\Logger.cpp" />
+    <ClCompile Include="log\LoggingModule.cpp" />
+    <ClCompile Include="log\LogStream.cpp" />
+    <ClCompile Include="measure\ByteSpeedMeter.cpp" />
     <ClCompile Include="network\http\HttpRequest.cpp" />
     <ClCompile Include="network\http\HttpServer.cpp" />
     <ClCompile Include="network\tcp\TcpAcceptor.cpp" />
