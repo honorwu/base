@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="base\Guid.h" />
     <ClInclude Include="buffer\Buffer.h" />
     <ClInclude Include="log\Logger.h" />
     <ClInclude Include="log\LoggingModule.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="timer\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="base\Guid.cpp" />
     <ClCompile Include="buffer\Buffer.cpp" />
     <ClCompile Include="log\Logger.cpp" />
     <ClCompile Include="log\LoggingModule.cpp" />
@@ -117,6 +119,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

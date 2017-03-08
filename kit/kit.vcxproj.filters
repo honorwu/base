@@ -28,6 +28,9 @@
     <Filter Include="measure">
       <UniqueIdentifier>{238f38ab-0841-4ff6-8776-b51870d74114}</UniqueIdentifier>
     </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{d43fe54e-ab26-4ff9-9729-49a2db27934a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="timer\TickCounter.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="measure\ByteSpeedMeter.h">
       <Filter>measure</Filter>
     </ClInclude>
+    <ClInclude Include="base\Guid.h">
+      <Filter>base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timer\Timer.cpp">
@@ -100,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="measure\ByteSpeedMeter.cpp">
       <Filter>measure</Filter>
+    </ClCompile>
+    <ClCompile Include="base\Guid.cpp">
+      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
