@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="peer.h" />
+    <ClInclude Include="proxy\ProxyModule.h">
+      <Filter>proxy</Filter>
+    </ClInclude>
+    <ClInclude Include="AppModule.h" />
+    <ClInclude Include="storage\StorageModule.h">
+      <Filter>storage</Filter>
+    </ClInclude>
+    <ClInclude Include="proxy\ProxyConnection.h">
+      <Filter>proxy</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="peer.cpp" />
+    <ClCompile Include="proxy\ProxyModule.cpp">
+      <Filter>proxy</Filter>
+    </ClCompile>
+    <ClCompile Include="AppModule.cpp" />
+    <ClCompile Include="storage\StorageModule.cpp">
+      <Filter>storage</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy\ProxyConnection.cpp">
+      <Filter>proxy</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="p2sp">
+      <UniqueIdentifier>{12ff1cdc-80a3-404d-af04-81a9b73650ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="proxy">
+      <UniqueIdentifier>{d8966a13-1d6b-4967-aae6-3c1f8af1681b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="storage">
+      <UniqueIdentifier>{8927b8ad-97e2-4d68-9e46-a83b4901337c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
