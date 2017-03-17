@@ -12,6 +12,15 @@
     <ClInclude Include="proxy\ProxyConnection.h">
       <Filter>proxy</Filter>
     </ClInclude>
+    <ClInclude Include="p2sp\Downloader.h">
+      <Filter>p2sp</Filter>
+    </ClInclude>
+    <ClInclude Include="p2sp\p2p\P2PTunnel.h">
+      <Filter>p2sp\p2p</Filter>
+    </ClInclude>
+    <ClInclude Include="p2sp\p2s\HttpTunnel.h">
+      <Filter>p2sp\p2s</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="peer.cpp" />
@@ -25,6 +34,15 @@
     <ClCompile Include="proxy\ProxyConnection.cpp">
       <Filter>proxy</Filter>
     </ClCompile>
+    <ClCompile Include="p2sp\Downloader.cpp">
+      <Filter>p2sp</Filter>
+    </ClCompile>
+    <ClCompile Include="p2sp\p2p\P2PTunnel.cpp">
+      <Filter>p2sp\p2p</Filter>
+    </ClCompile>
+    <ClCompile Include="p2sp\p2s\HttpTunnel.cpp">
+      <Filter>p2sp\p2s</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="p2sp">
@@ -35,6 +53,12 @@
     </Filter>
     <Filter Include="storage">
       <UniqueIdentifier>{8927b8ad-97e2-4d68-9e46-a83b4901337c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="p2sp\p2s">
+      <UniqueIdentifier>{a60bd499-76e0-401d-a4ca-afd0f8500261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="p2sp\p2p">
+      <UniqueIdentifier>{c44b770a-1a02-4bff-b387-4458c46ad54d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

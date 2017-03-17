@@ -142,6 +142,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AppModule.h" />
+    <ClInclude Include="p2sp\Downloader.h" />
+    <ClInclude Include="p2sp\p2p\P2PTunnel.h" />
+    <ClInclude Include="p2sp\p2s\HttpTunnel.h" />
     <ClInclude Include="peer.h" />
     <ClInclude Include="proxy\ProxyConnection.h" />
     <ClInclude Include="proxy\ProxyModule.h" />
@@ -149,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AppModule.cpp" />
+    <ClCompile Include="p2sp\Downloader.cpp" />
+    <ClCompile Include="p2sp\p2p\P2PTunnel.cpp" />
+    <ClCompile Include="p2sp\p2s\HttpTunnel.cpp" />
     <ClCompile Include="peer.cpp" />
     <ClCompile Include="proxy\ProxyConnection.cpp" />
     <ClCompile Include="proxy\ProxyModule.cpp" />
