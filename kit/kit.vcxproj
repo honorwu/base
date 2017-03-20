@@ -25,8 +25,10 @@
     <ClInclude Include="log\LoggingModule.h" />
     <ClInclude Include="log\LogStream.h" />
     <ClInclude Include="measure\ByteSpeedMeter.h" />
+    <ClInclude Include="network\http\HttpClient.h" />
     <ClInclude Include="network\http\HttpRequest.h" />
     <ClInclude Include="network\http\HttpServer.h" />
+    <ClInclude Include="network\http\UrlParser.h" />
     <ClInclude Include="network\tcp\TcpAcceptor.h" />
     <ClInclude Include="network\udp\UdpServer.h" />
     <ClInclude Include="thread\CommonThread.h" />
@@ -40,8 +42,10 @@
     <ClCompile Include="log\LoggingModule.cpp" />
     <ClCompile Include="log\LogStream.cpp" />
     <ClCompile Include="measure\ByteSpeedMeter.cpp" />
+    <ClCompile Include="network\http\HttpClient.cpp" />
     <ClCompile Include="network\http\HttpRequest.cpp" />
     <ClCompile Include="network\http\HttpServer.cpp" />
+    <ClCompile Include="network\http\UrlParser.cpp" />
     <ClCompile Include="network\tcp\TcpAcceptor.cpp" />
     <ClCompile Include="network\udp\UdpServer.cpp" />
     <ClCompile Include="thread\CommonThread.cpp" />

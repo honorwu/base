@@ -72,6 +72,12 @@
     <ClInclude Include="base\Guid.h">
       <Filter>base</Filter>
     </ClInclude>
+    <ClInclude Include="network\http\HttpClient.h">
+      <Filter>network\http</Filter>
+    </ClInclude>
+    <ClInclude Include="network\http\UrlParser.h">
+      <Filter>network\http</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timer\Timer.cpp">
@@ -109,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="base\Guid.cpp">
       <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="network\http\HttpClient.cpp">
+      <Filter>network\http</Filter>
+    </ClCompile>
+    <ClCompile Include="network\http\UrlParser.cpp">
+      <Filter>network\http</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
