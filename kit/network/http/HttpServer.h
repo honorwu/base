@@ -1,5 +1,5 @@
-#ifndef _KIT_HTTPSERVER_H_
-#define _KIT_HTTPSERVER_H_
+#ifndef _KIT_HTTP_SERVER_H_
+#define _KIT_HTTP_SERVER_H_
 
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
