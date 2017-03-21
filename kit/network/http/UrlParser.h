@@ -12,6 +12,7 @@ namespace kit
         UrlParser(std::string url);
 		std::string GetHost();
 		std::string GetPort();
+        std::string GetRequest();
     private:
         void Parse();
         std::string url_;
@@ -21,6 +22,9 @@ namespace kit
 
 		boost::uint32_t port_begin_pos_;
 		boost::uint32_t port_end_pos_;
+
+        boost::uint32_t request_begin_pos_;
+        boost::uint32_t request_end_pos_;
     };
 }
 

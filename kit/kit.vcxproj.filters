@@ -78,6 +78,9 @@
     <ClInclude Include="network\http\UrlParser.h">
       <Filter>network\http</Filter>
     </ClInclude>
+    <ClInclude Include="network\http\HttpResponse.h">
+      <Filter>network\http</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timer\Timer.cpp">
@@ -120,6 +123,9 @@
       <Filter>network\http</Filter>
     </ClCompile>
     <ClCompile Include="network\http\UrlParser.cpp">
+      <Filter>network\http</Filter>
+    </ClCompile>
+    <ClCompile Include="network\http\HttpResponse.cpp">
       <Filter>network\http</Filter>
     </ClCompile>
   </ItemGroup>

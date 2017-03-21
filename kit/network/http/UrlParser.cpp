@@ -36,8 +36,12 @@ namespace kit
 		end_pos = url_.find('/', begin_pos);
 		if (end_pos != std::string::npos)
 		{
-			if (port_begin_pos_ != std::string::npos)
-				port_end_pos_ = end_pos;
+            if (port_begin_pos_ != std::string::npos)
+            {
+                port_end_pos_ = end_pos;
+            }
+            request_begin_pos_ = end_pos;
+            request_end_pos_ = url_.length();
 			host_end_pos_ = end_pos;
 		}
 		else
@@ -46,7 +50,9 @@ namespace kit
 			end_pos = url_.find('/', begin_pos);
 
 			if (port_begin_pos_ != std::string::npos)
+            {
 				port_end_pos_ = end_pos;
+            }
 
 			host_end_pos_ = end_pos;
 		}
@@ -75,4 +81,16 @@ namespace kit
 			return "";
 		}
 	}
+
+    std::string UrlParser::GetRequest()
+    {
+        if (request_begin_pos_ != std::string::npos)
+        {
+            return url_.substr(request_begin_pos_, request_end_pos_ - request_begin_pos_);
+        }
+        else
+        {
+            return "";
+        }
+    }
 }
