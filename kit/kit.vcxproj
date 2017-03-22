@@ -31,6 +31,8 @@
     <ClInclude Include="network\http\HttpServer.h" />
     <ClInclude Include="network\http\UrlParser.h" />
     <ClInclude Include="network\tcp\TcpAcceptor.h" />
+    <ClInclude Include="network\tcp\TcpClient.h" />
+    <ClInclude Include="network\tcp\TcpServer.h" />
     <ClInclude Include="network\udp\UdpServer.h" />
     <ClInclude Include="thread\CommonThread.h" />
     <ClInclude Include="timer\TickCounter.h" />
@@ -49,6 +51,8 @@
     <ClCompile Include="network\http\HttpServer.cpp" />
     <ClCompile Include="network\http\UrlParser.cpp" />
     <ClCompile Include="network\tcp\TcpAcceptor.cpp" />
+    <ClCompile Include="network\tcp\TcpClient.cpp" />
+    <ClCompile Include="network\tcp\TcpServer.cpp" />
     <ClCompile Include="network\udp\UdpServer.cpp" />
     <ClCompile Include="thread\CommonThread.cpp" />
     <ClCompile Include="timer\Timer.cpp" />
