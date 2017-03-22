@@ -144,7 +144,9 @@
     <ClInclude Include="AppModule.h" />
     <ClInclude Include="p2sp\Downloader.h" />
     <ClInclude Include="p2sp\p2p\P2PTunnel.h" />
+    <ClInclude Include="p2sp\p2p\PeerTunnel.h" />
     <ClInclude Include="p2sp\p2s\HttpTunnel.h" />
+    <ClInclude Include="p2sp\Protocol.h" />
     <ClInclude Include="peer.h" />
     <ClInclude Include="proxy\ProxyConnection.h" />
     <ClInclude Include="proxy\ProxyModule.h" />
@@ -154,6 +156,7 @@
     <ClCompile Include="AppModule.cpp" />
     <ClCompile Include="p2sp\Downloader.cpp" />
     <ClCompile Include="p2sp\p2p\P2PTunnel.cpp" />
+    <ClCompile Include="p2sp\p2p\PeerTunnel.cpp" />
     <ClCompile Include="p2sp\p2s\HttpTunnel.cpp" />
     <ClCompile Include="peer.cpp" />
     <ClCompile Include="proxy\ProxyConnection.cpp" />

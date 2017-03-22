@@ -21,6 +21,12 @@
     <ClInclude Include="p2sp\p2s\HttpTunnel.h">
       <Filter>p2sp\p2s</Filter>
     </ClInclude>
+    <ClInclude Include="p2sp\p2p\PeerTunnel.h">
+      <Filter>p2sp\p2p</Filter>
+    </ClInclude>
+    <ClInclude Include="p2sp\Protocol.h">
+      <Filter>p2sp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="peer.cpp" />
@@ -42,6 +48,9 @@
     </ClCompile>
     <ClCompile Include="p2sp\p2s\HttpTunnel.cpp">
       <Filter>p2sp\p2s</Filter>
+    </ClCompile>
+    <ClCompile Include="p2sp\p2p\PeerTunnel.cpp">
+      <Filter>p2sp\p2p</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

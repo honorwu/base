@@ -10,7 +10,7 @@ namespace kit
     struct IUdpServerListener
     {
         virtual void OnUdpRecv(boost::asio::ip::udp::endpoint & end_point, boost::shared_ptr<kit::Buffer> buffer) = 0;
-        virtual boost::asio::io_service & GetIoService() = 0;
+        //virtual boost::asio::io_service & GetIoService() = 0;
         virtual ~IUdpServerListener() {}
     };
 

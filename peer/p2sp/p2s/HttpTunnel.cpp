@@ -30,7 +30,16 @@ namespace peer
 
     void HttpTunnel::HandleRecvHttpResponse(boost::shared_ptr<kit::HttpResponse> http_response)
     {
-
+        switch (http_response->GetStatusCode())
+        {
+        case 200:
+        case 206:
+            break;
+        case 404:
+            break;
+        default:
+            break;
+        }
     }
 
     void HttpTunnel::HandleRecvHttpData(const boost::system::error_code & ec,
