@@ -5,19 +5,11 @@
 
 namespace kit
 {
-    UdpServer::UdpServer(boost::shared_ptr<IUdpServerListener> handler, boost::asio::io_service * io_service,
-        boost::asio::io_service::work * work)
+    UdpServer::UdpServer(boost::shared_ptr<IUdpServerListener> handler,
+        boost::asio::io_service & io_service)
         : handler_(handler)
-        , port_(0)
-        , io_service_(io_service)
-        , work_(work)
-        , socket_(*io_service)
+        , socket_(io_service)
     {
-        for (size_t i=0; i<4; i++)
-        {
-            boost::shared_ptr<boost::thread> thread(new boost::thread(
-                boost::bind(&boost::asio::io_service::run, &*io_service_)));
-        }
     }
 
     bool UdpServer::Listen(boost::uint16_t port)
@@ -53,7 +45,8 @@ namespace kit
     void UdpServer::UdpRecvFrom()
     {
         boost::shared_ptr<kit::Buffer> recv_buffer = kit::Buffer::Create(2048);
-        boost::asio::ip::udp::endpoint * endpoint = new boost::asio::ip::udp::endpoint();
+        boost::shared_ptr<boost::asio::ip::udp::endpoint> endpoint(new boost::asio::ip::udp::endpoint());
+        recv_buffer->Clear();
 
         socket_.async_receive_from(
             boost::asio::buffer(recv_buffer->Data(), recv_buffer->RemainSize()),
@@ -85,15 +78,17 @@ namespace kit
     }
 
     void UdpServer::HandleUdpRecvFrom(const boost::system::error_code & ec, std::size_t bytes_transferred,
-        boost::shared_ptr<kit::Buffer> recv_buffer, boost::asio::ip::udp::endpoint * endpoint)
+        boost::shared_ptr<kit::Buffer> recv_buffer,
+        boost::shared_ptr<boost::asio::ip::udp::endpoint> endpoint)
     {
         if (!ec)
         {
             recv_buffer->SetLength(bytes_transferred);
-            handler_->GetIoService().post(boost::bind(&kit::IUdpServerListener::OnUdpRecv, handler_, *endpoint, recv_buffer));
+            handler_->OnUdpRecv(recv_buffer, endpoint);
         }
 
-        delete endpoint;
+        endpoint.reset();
+        recv_buffer.reset();
 
         UdpRecvFrom();
     }
@@ -102,12 +97,5 @@ namespace kit
     {
         boost::system::error_code ec;
         socket_.close(ec);
-
-        delete work_;
-        work_ = NULL;
-        io_service_->stop();
-
-        delete io_service_;
-        io_service_ = NULL;
     }
 }

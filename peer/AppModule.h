@@ -24,8 +24,8 @@ namespace peer
         void Start(boost::uint16_t proxy_port, boost::uint16_t udp_port);
         void Stop();
 
-        virtual void OnUdpRecv(boost::asio::ip::udp::endpoint & end_point,
-            boost::shared_ptr<kit::Buffer> buffer);
+        virtual void OnUdpRecv(boost::shared_ptr<kit::Buffer> buffer,
+            boost::shared_ptr<boost::asio::ip::udp::endpoint> end_point);
         void SendUdpBuffer(boost::asio::ip::udp::endpoint & end_point,
             boost::shared_ptr<kit::Buffer> buffer);
 

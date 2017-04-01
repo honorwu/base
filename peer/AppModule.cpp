@@ -11,7 +11,7 @@ namespace peer
         ProxyModule::Instance()->Start(proxy_port);
         StorageModule::Instance()->Start();
 
-        udp_server_ = kit::UdpServer::create(shared_from_this());
+        udp_server_ = kit::UdpServer::create(shared_from_this(), boost::asio::io_service());
         udp_server_->Listen(udp_port);
     }
 
@@ -22,8 +22,8 @@ namespace peer
         instance_.reset();
     }
 
-    void AppModule::OnUdpRecv(boost::asio::ip::udp::endpoint & end_point,
-        boost::shared_ptr<kit::Buffer> buffer)
+    void AppModule::OnUdpRecv(boost::shared_ptr<kit::Buffer> buffer,
+        boost::shared_ptr<boost::asio::ip::udp::endpoint> end_point)
     {
 
     }
