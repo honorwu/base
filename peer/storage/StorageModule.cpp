@@ -12,4 +12,15 @@ namespace peer
     {
         instance_.reset();
     }
+
+    void StorageModule::AddPiece(const kit::Guid & guid, const PieceInfo & piece,
+        boost::shared_ptr<kit::Buffer> buffer)
+    {
+        if (resource_map_.find(guid) == resource_map_.end())
+        {
+            return;
+        }
+
+        resource_map_[guid]->AddPiece(piece, buffer);
+    }
 }

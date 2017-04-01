@@ -27,6 +27,9 @@
     <ClInclude Include="p2sp\Protocol.h">
       <Filter>p2sp</Filter>
     </ClInclude>
+    <ClInclude Include="storage\Resource.h">
+      <Filter>storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="peer.cpp" />
@@ -51,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="p2sp\p2p\PeerTunnel.cpp">
       <Filter>p2sp\p2p</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\Resource.cpp">
+      <Filter>storage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

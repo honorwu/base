@@ -32,6 +32,6 @@ namespace peer
             return;
         }
 
-        iter->second->OnPieceReceved(piece);
+        iter->second->OnPieceReceved(piece, 0);
     }
 }

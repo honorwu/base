@@ -23,6 +23,7 @@ namespace peer
 
         void Recv();
         virtual void HandleRecv(boost::shared_ptr<kit::HttpServer> http_server, const std::string & request);
+        void Send(boost::shared_ptr<kit::Buffer> buffer);
 
     private:
         boost::asio::ip::tcp::socket * socket_;

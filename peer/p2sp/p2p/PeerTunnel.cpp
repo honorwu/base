@@ -22,13 +22,63 @@ namespace peer
         while (requesting_count_ < window_size_ && !task_set_.empty())
         {
             // request piece
-            task_set_.erase(task_set_.begin());
+            const PieceInfo & p = *(task_set_.begin());
+            piece_timing_map_[p].restart();
+
+            task_set_.erase(p);
             requesting_count_++;
         }
     }
 
-    void PeerTunnel::OnPieceReceved(const PieceInfo & piece)
+    void PeerTunnel::OnP2PTimer(unsigned int times)
     {
+        CheckPieceTimeout();
+
+        unsigned int last_window_size = window_size_;
+        window_size_ = byte_speed_meter_.SecondByteSpeed() / 1024;
+
+        if (window_size_ < last_window_size)
+        {
+            window_size_ = (9 * last_window_size + 1 * window_size_) / 10;
+        }
+    }
+
+    void PeerTunnel::CheckPieceTimeout()
+    {
+        for (std::map<PieceInfo, boost::timer>::iterator iter = piece_timing_map_.begin();
+            iter != piece_timing_map_.end(); )
+        {
+            if (iter->second.elapsed() > max_rtt_ + 1000)
+            {
+                OnPieceTimeout(iter->first);
+                piece_timing_map_.erase(iter++);
+            }
+            else
+            {
+                ++iter;
+            }
+        }
+    }
+
+    void PeerTunnel::UpdateRTT(const PieceInfo & piece)
+    {
+        boost::uint32_t rtt = piece_timing_map_[piece].elapsed() * 1000;
+        piece_timing_map_.erase(piece);
+
+        if (rtt > max_rtt_)
+        {
+            max_rtt_ = rtt;
+        }
+
+        average_rtt_ = (average_rtt_ * 9 + rtt) / 10;
+    }
+
+    void PeerTunnel::OnPieceReceved(const PieceInfo & piece, unsigned int piece_size_in_byte)
+    {
+        UpdateRTT(piece);
+
+        byte_speed_meter_.SubmitBytes(piece_size_in_byte);
+
         requesting_count_--;
         RequestAllPiece();
     }

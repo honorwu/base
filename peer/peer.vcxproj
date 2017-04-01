@@ -150,6 +150,7 @@
     <ClInclude Include="peer.h" />
     <ClInclude Include="proxy\ProxyConnection.h" />
     <ClInclude Include="proxy\ProxyModule.h" />
+    <ClInclude Include="storage\Resource.h" />
     <ClInclude Include="storage\StorageModule.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
     <ClCompile Include="peer.cpp" />
     <ClCompile Include="proxy\ProxyConnection.cpp" />
     <ClCompile Include="proxy\ProxyModule.cpp" />
+    <ClCompile Include="storage\Resource.cpp" />
     <ClCompile Include="storage\StorageModule.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
