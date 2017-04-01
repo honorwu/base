@@ -2,7 +2,7 @@
 #define _KIT_BYTESPEEDMETER_H_
 
 #include <boost/cstdint.hpp>
-#include "kit/timer/TickCounter.h"
+#include <boost/timer.hpp>
 #include <string.h>
 
 namespace kit
@@ -61,7 +61,7 @@ namespace kit
         static const boost::uint32_t HISTORY_INTERVAL_IN_SEC = SECONDS_IN_MINUTE;
 
     private:
-        kit::TickCounter tick_count_;
+        boost::timer tick_count_;
 
         boost::uint32_t total_bytes_;
 
@@ -81,7 +81,7 @@ namespace kit
 
     inline void ByteSpeedMeter::CheckTickCount()
     {
-        boost::uint32_t curr_sec = tick_count_.Elapsed();
+        boost::uint32_t curr_sec = tick_count_.elapsed() / 1000;
         if (curr_sec == current_sec_)
             return;
         UpdateTickCount(curr_sec);
@@ -120,7 +120,7 @@ namespace kit
 
     inline boost::uint32_t ByteSpeedMeter::GetElapsedTimeInSeconds() const
     {
-        boost::uint32_t s = tick_count_.Elapsed();
+        boost::uint32_t s = tick_count_.elapsed() / 1000;
         return s <= 0 ? 1 : s;
     }
 }

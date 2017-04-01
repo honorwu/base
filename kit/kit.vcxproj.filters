@@ -33,9 +33,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="timer\TickCounter.h">
-      <Filter>timer</Filter>
-    </ClInclude>
     <ClInclude Include="timer\Timer.h">
       <Filter>timer</Filter>
     </ClInclude>

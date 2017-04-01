@@ -35,7 +35,6 @@
     <ClInclude Include="network\tcp\TcpServer.h" />
     <ClInclude Include="network\udp\UdpServer.h" />
     <ClInclude Include="thread\CommonThread.h" />
-    <ClInclude Include="timer\TickCounter.h" />
     <ClInclude Include="timer\Timer.h" />
   </ItemGroup>
   <ItemGroup>
