@@ -1,4 +1,5 @@
 #include "StorageModule.h"
+#include "Resource.h"
 
 namespace peer
 {
@@ -11,6 +12,19 @@ namespace peer
     void StorageModule::Stop()
     {
         instance_.reset();
+    }
+
+    boost::shared_ptr<Resource> StorageModule::CreateResource(kit::Guid & resource_id)
+    {
+        std::map<kit::Guid, boost::shared_ptr<Resource> >::iterator iter = resource_map_.find(resource_id);
+        if (iter != resource_map_.end())
+        {
+            return iter->second;
+        }
+
+        boost::shared_ptr<Resource> resource(new Resource(resource_id));
+        resource_map_[resource_id] = resource;
+        return resource;
     }
 
     void StorageModule::AddPiece(const kit::Guid & guid, const PieceInfo & piece,

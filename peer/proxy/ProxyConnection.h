@@ -7,6 +7,8 @@
 
 namespace peer
 {
+    class Downloader;
+
     class ProxyConnection
         : public boost::enable_shared_from_this<ProxyConnection>
         , public kit::IHttpServerListener
@@ -28,6 +30,7 @@ namespace peer
     private:
         boost::asio::ip::tcp::socket * socket_;
         boost::shared_ptr<kit::HttpServer> http_server_;
+        boost::shared_ptr<Downloader> downloader_;
     };
 }
 

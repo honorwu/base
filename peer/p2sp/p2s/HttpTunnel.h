@@ -11,6 +11,12 @@ namespace peer
         , public boost::enable_shared_from_this<HttpTunnel>
     {
     public:
+        HttpTunnel(std::string & url)
+            : url_(url)
+        {
+
+        }
+
         void Start();
         void Stop();
 

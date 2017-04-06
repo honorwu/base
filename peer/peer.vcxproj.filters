@@ -30,6 +30,9 @@
     <ClInclude Include="storage\Resource.h">
       <Filter>storage</Filter>
     </ClInclude>
+    <ClInclude Include="storage\Chunk.h">
+      <Filter>storage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="peer.cpp" />
@@ -56,6 +59,9 @@
       <Filter>p2sp\p2p</Filter>
     </ClCompile>
     <ClCompile Include="storage\Resource.cpp">
+      <Filter>storage</Filter>
+    </ClCompile>
+    <ClCompile Include="storage\Chunk.cpp">
       <Filter>storage</Filter>
     </ClCompile>
   </ItemGroup>

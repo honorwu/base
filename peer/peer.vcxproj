@@ -150,6 +150,7 @@
     <ClInclude Include="peer.h" />
     <ClInclude Include="proxy\ProxyConnection.h" />
     <ClInclude Include="proxy\ProxyModule.h" />
+    <ClInclude Include="storage\Chunk.h" />
     <ClInclude Include="storage\Resource.h" />
     <ClInclude Include="storage\StorageModule.h" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClCompile Include="peer.cpp" />
     <ClCompile Include="proxy\ProxyConnection.cpp" />
     <ClCompile Include="proxy\ProxyModule.cpp" />
+    <ClCompile Include="storage\Chunk.cpp" />
     <ClCompile Include="storage\Resource.cpp" />
     <ClCompile Include="storage\StorageModule.cpp" />
   </ItemGroup>

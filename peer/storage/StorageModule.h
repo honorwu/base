@@ -5,11 +5,12 @@
 #include "peer/p2sp/Protocol.h"
 #include "kit/buffer/Buffer.h"
 #include "kit/base/Guid.h"
-#include "Resource.h"
 #include <map>
 
 namespace peer
 {
+    class Resource;
+
     class StorageModule
     {
     public:
@@ -23,6 +24,8 @@ namespace peer
         }
         void Start();
         void Stop();
+
+        boost::shared_ptr<Resource> CreateResource(kit::Guid & resource_id);
 
         void AddPiece(const kit::Guid & guid, const PieceInfo & piece, boost::shared_ptr<kit::Buffer> buffer);
     private:
