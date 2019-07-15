@@ -84,6 +84,9 @@
     <ClInclude Include="network\tcp\TcpServer.h">
       <Filter>network\tcp</Filter>
     </ClInclude>
+    <ClInclude Include="timer\TickCounter.h">
+      <Filter>timer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="timer\Timer.cpp">

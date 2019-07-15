@@ -5,7 +5,6 @@
 #include "peer/p2sp/Protocol.h"
 #include <set>
 #include <map>
-#include <boost/timer.hpp>
 #include "kit/measure/ByteSpeedMeter.h"
 
 namespace peer
@@ -31,7 +30,7 @@ namespace peer
 
         std::set<PieceInfo> task_set_;
         unsigned int requesting_count_;
-        std::map<PieceInfo, boost::timer> piece_timing_map_;
+        std::map<PieceInfo, kit::TickCounter> piece_timing_map_;
 
         unsigned int window_size_;
 

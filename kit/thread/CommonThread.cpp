@@ -1,50 +1,49 @@
 #include "CommonThread.h"
-#include <boost/bind.hpp>
 
 namespace kit
 {
     CommonThread::CommonThread ()
-        : work_(NULL)
-        , io_service_(NULL)
+        : work_guard_(NULL)
+        , io_context_(NULL)
         , thread_(NULL)
     {
     }
 
     void CommonThread::Start()
     {
-        if (NULL == work_)
+        if (NULL == work_guard_)
         {
-            io_service_ = new boost::asio::io_service();
-            work_ = new boost::asio::io_service::work(* io_service_);
-            thread_ = new boost::thread(boost::bind(&CommonThread::Run, this));
+            io_context_ = new std::experimental::net::io_context();
+			work_guard_ = &std::experimental::net::make_work_guard(*io_context_);
+            thread_ = new std::thread(std::bind(&CommonThread::Run, this));
         }
     }
 
     void CommonThread::Stop()
     {
-        if (NULL != work_)
+        if (NULL != work_guard_)
         {
-            delete work_;
-            work_ = NULL;
-            io_service_->stop();
+            delete work_guard_;
+			work_guard_ = NULL;
+            io_context_->stop();
             thread_->join();
             delete thread_;
             thread_ = NULL;
-            delete io_service_;
-            io_service_ = NULL;
+            delete io_context_;
+			io_context_ = NULL;
         }
     }
 
     void CommonThread::Run()
     {
-        io_service_->run();
+		io_context_->run();
     }
 
-    void CommonThread::Post(boost::function<void()> handler)
+    void CommonThread::Post(std::function<void()> handler)
     {
-        if (work_ != NULL && io_service_ != NULL)
+        if (work_guard_ != NULL && io_context_ != NULL)
         {
-            io_service_->post(handler);
+			std::experimental::net::post(io_context_->get_executor(), handler);
         }
     }
 }

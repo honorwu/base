@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include <functional>
 
 namespace kit
 {
@@ -19,20 +20,18 @@ namespace kit
             return;
         }
 
-        boost::system::error_code ec;
-        asio_timer_.cancel(ec);
-
+        timer_.cancel();
         handler_.reset();
     }
 
     void Timer::DoOnceStart()
     {
-        asio_timer_.expires_from_now(boost::posix_time::milliseconds(interval_in_milliseconds_));
-        asio_timer_.async_wait(
-                boost::bind(&Timer::OnTimer, shared_from_this(), boost::asio::placeholders::error));
+        timer_.expires_after(std::chrono::duration<int, std::milli>(interval_in_milliseconds_));
+        timer_.async_wait(
+                std::bind(&Timer::OnTimer, shared_from_this(), std::placeholders::_1));
     }
 
-    void Timer::OnTimer(const boost::system::error_code & ec)
+    void Timer::OnTimer(const std::error_code & ec)
     {    
         if (ec)
         {

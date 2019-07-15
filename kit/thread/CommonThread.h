@@ -1,34 +1,32 @@
 #ifndef _KIT_COMMON_THREAD_H_
 #define _KIT_COMMON_THREAD_H_
 
-#include <boost/asio.hpp>
-#include <boost/thread/thread.hpp>
-#include <boost/function.hpp>
+#include "experimental/net"
+#include "experimental/executor"
 
 namespace kit
 {
     class CommonThread 
-        : public boost::noncopyable
     {
     public:
         CommonThread();
         void Start();
         void Stop();
 
-        boost::asio::io_service & get_io_service()
+        std::experimental::net::io_context & get_io_context()
         {
-            return * io_service_;
+            return * io_context_;
         }
 
-        void Post(boost::function<void()> handler);
+        void Post(std::function<void()> handler);
 
     private:
         void Run();
 
     private:
-        boost::asio::io_service * io_service_;
-        boost::asio::io_service::work * work_;
-        boost::thread * thread_;
+		std::experimental::net::io_context * io_context_;
+		std::experimental::net::executor_work_guard<std::experimental::net::io_context::executor_type > * work_guard_;
+        std::thread * thread_;
     };
 }
 #endif

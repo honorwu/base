@@ -23,7 +23,7 @@ namespace peer
         {
             // request piece
             const PieceInfo & p = *(task_set_.begin());
-            piece_timing_map_[p].restart();
+            piece_timing_map_[p].Restart();
 
             task_set_.erase(p);
             requesting_count_++;
@@ -45,10 +45,10 @@ namespace peer
 
     void PeerTunnel::CheckPieceTimeout()
     {
-        for (std::map<PieceInfo, boost::timer>::iterator iter = piece_timing_map_.begin();
+        for (std::map<PieceInfo, kit::TickCounter>::iterator iter = piece_timing_map_.begin();
             iter != piece_timing_map_.end(); )
         {
-            if (iter->second.elapsed() > max_rtt_ + 1000)
+            if (iter->second.Elapsed() > max_rtt_ + 1000)
             {
                 OnPieceTimeout(iter->first);
                 piece_timing_map_.erase(iter++);
@@ -62,7 +62,7 @@ namespace peer
 
     void PeerTunnel::UpdateRTT(const PieceInfo & piece)
     {
-        boost::uint32_t rtt = piece_timing_map_[piece].elapsed() * 1000;
+        unsigned int rtt = piece_timing_map_[piece].Elapsed() * 1000;
         piece_timing_map_.erase(piece);
 
         if (rtt > max_rtt_)

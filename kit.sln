@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kit", "kit\kit.vcxproj", "{F4B63473-A4D8-4D09-80F6-0C62EB282C5C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "peer", "peer\peer.vcxproj", "{F02349E2-7930-4B06-8CE6-34F5B615F4ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F4B63473-A4D8-4D09-80F6-0C62EB282C5C} = {F4B63473-A4D8-4D09-80F6-0C62EB282C5C}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,5 +37,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A04BC86-A36D-43F4-AAA9-5035BEDEF48F}
 	EndGlobalSection
 EndGlobal

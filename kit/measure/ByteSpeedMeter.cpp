@@ -40,40 +40,40 @@ namespace kit
         return is_running_;
     }
 
-    boost::uint32_t ByteSpeedMeter::TotalBytes() const
+    unsigned int ByteSpeedMeter::TotalBytes() const
     {
         return total_bytes_;
     }
 
-    boost::uint32_t ByteSpeedMeter::GetPositionFromSeconds(boost::uint32_t seconds)
+    unsigned int ByteSpeedMeter::GetPositionFromSeconds(unsigned int seconds)
     {
         return seconds % HISTORY_INTERVAL_IN_SEC;
     }
 
-    boost::uint32_t ByteSpeedMeter::AverageByteSpeed() const
+	unsigned int ByteSpeedMeter::AverageByteSpeed() const
     {
         if (is_running_ == false)
             return 0;
 
-        return (boost::int64_t)total_bytes_ / GetElapsedTimeInSeconds();
+        return (unsigned __int64)total_bytes_ / GetElapsedTimeInSeconds();
     }
 
-    boost::uint32_t ByteSpeedMeter::SecondByteSpeed()  // 2 second
+	unsigned int ByteSpeedMeter::SecondByteSpeed()  // 2 second
     {
         return CalcSpeedInDuration(SECONDS_IN_SECOND);
     }
 
-    boost::uint32_t ByteSpeedMeter::CurrentByteSpeed()  // 5 seconds
+	unsigned int ByteSpeedMeter::CurrentByteSpeed()  // 5 seconds
     {
         return CalcSpeedInDuration(SECONDS_IN_RECENT);
     }
 
-    boost::uint32_t ByteSpeedMeter::RecentByteSpeed()  // 20 seconds
+	unsigned int ByteSpeedMeter::RecentByteSpeed()  // 20 seconds
     {
         return CalcSpeedInDuration(SECONDS_IN_RECENT_20SEC);
     }
 
-    boost::uint32_t ByteSpeedMeter::RecentMinuteByteSpeed()  // 1 minute
+	unsigned int ByteSpeedMeter::RecentMinuteByteSpeed()  // 1 minute
     {
         return CalcSpeedInDuration(HISTORY_INTERVAL_IN_SEC);
     }

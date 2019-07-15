@@ -2,9 +2,8 @@
 #define _kit_TCP_CLIENT_H_
 
 #include <string>
-#include <boost/asio.hpp>
 #include <deque>
-#include <boost/shared_ptr.hpp>
+#include "experimental/net"
 
 namespace kit
 {
@@ -15,8 +14,8 @@ namespace kit
 {
     struct ITcpClientListener
     {
-        virtual void HandleConnect(const boost::system::error_code & ec) = 0;
-        virtual void HandleRecv(boost::shared_ptr<kit::Buffer> buffer) = 0;
+        virtual void HandleConnect(const std::error_code & ec) = 0;
+        virtual void HandleRecv(std::shared_ptr<kit::Buffer> buffer) = 0;
         virtual ~ITcpClientListener() 
         {
         }
@@ -25,35 +24,38 @@ namespace kit
     class TcpClient
     {
     public:
-        TcpClient(boost::asio::io_service & io_service, const std::string & server, boost::uint16_t port,
-            boost::shared_ptr<ITcpClientListener> listener);
+        TcpClient(std::experimental::net::io_context & io_context,
+			const std::string & server,
+			unsigned short port,
+            std::shared_ptr<ITcpClientListener> listener);
         void Connect();
-        void HandleConnect(const boost::system::error_code & ec, boost::asio::ip::tcp::resolver::iterator endpoint_iterator);
+        void HandleConnect(const std::error_code & ec);
 
         void Resolve();
-        void HandleResolve(const boost::system::error_code & ec, boost::asio::ip::tcp::resolver::iterator endpoint_iterator);
+        void HandleResolve(const std::error_code & ec, 
+			const std::experimental::net::ip::tcp::resolver::results_type & results_type);
 
-        void Send(boost::shared_ptr<kit::Buffer> buffer);
-        void HandleSend(const boost::system::error_code& ec, size_t bytes_transferred);
+        void Send(std::shared_ptr<kit::Buffer> buffer);
+        void HandleSend(const std::error_code& ec, size_t bytes_transferred);
 
         void Recv();
-        void HandleRecv(const boost::system::error_code& ec, size_t bytes_transferred);
+        void HandleRecv(const std::error_code& ec, size_t bytes_transferred);
 
         void Close();
 
     private:
-        void DoSend(boost::shared_ptr<kit::Buffer> buffer);
+        void DoSend(std::shared_ptr<kit::Buffer> buffer);
 
-        boost::asio::ip::tcp::socket socket_;
-        boost::asio::ip::tcp::resolver resolver_;
+        std::experimental::net::ip::tcp::socket socket_;
+		std::experimental::net::ip::tcp::resolver resolver_;
 
         std::string server_;
-        boost::uint16_t port_;
+        unsigned short port_;
 
-        std::deque<boost::shared_ptr<kit::Buffer> > send_list_;
-        boost::shared_ptr<kit::Buffer> recv_buffer_;        
+        std::list<std::shared_ptr<kit::Buffer> > send_list_;
+        std::shared_ptr<kit::Buffer> recv_buffer_;        
 
-        boost::shared_ptr<ITcpClientListener> listener_;
+        std::shared_ptr<ITcpClientListener> listener_;
     };
 }
 

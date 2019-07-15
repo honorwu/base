@@ -22,9 +22,9 @@ namespace peer
 
     }
 
-    void P2PTunnel::OnDataResponsePacket(boost::asio::ip::udp::endpoint & end_point, PieceInfo & piece)
+    void P2PTunnel::OnDataResponsePacket(std::experimental::net::ip::udp::endpoint & end_point, PieceInfo & piece)
     {
-        std::map<boost::asio::ip::udp::endpoint, boost::shared_ptr<PeerTunnel> >::iterator
+        std::map<std::experimental::net::ip::udp::endpoint, std::shared_ptr<PeerTunnel> >::iterator
             iter = peer_tunnel_map_.find(end_point);
 
         if (iter == peer_tunnel_map_.end())

@@ -32,7 +32,7 @@ namespace peer
         resource_.reset();
     }
 
-    void Downloader::OnRecvPieceBuffer(boost::shared_ptr<kit::Buffer> buffer)
+    void Downloader::OnRecvPieceBuffer(std::shared_ptr<kit::Buffer> buffer)
     {
         proxy_connection_->Send(buffer);
     }

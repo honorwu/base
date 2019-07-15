@@ -1,4 +1,5 @@
 #include "Guid.h"
+#include <assert.h>
 
 namespace kit
 {

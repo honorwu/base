@@ -2,16 +2,16 @@
 #define _KIT_BUFFER_H_
 
 #include <string>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace kit
 {
     class Buffer
     {
     public:
-        static boost::shared_ptr<Buffer> Create(unsigned int size)
+        static std::shared_ptr<Buffer> Create(unsigned int size)
         {
-            return boost::shared_ptr<Buffer>(new Buffer(size));
+            return std::shared_ptr<Buffer>(new Buffer(size));
         }
         
         ~Buffer();

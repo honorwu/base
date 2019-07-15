@@ -1,15 +1,15 @@
 #ifndef _KIT_TCPACCEPTOR_H_
 #define _KIT_TCPACCEPTOR_H_
 
-#include <boost/shared_ptr.hpp>
-#include <boost/asio/ip/tcp.hpp>
+#include "experimental/net"
+#include "experimental/io_context"
 
 namespace kit
 {
     struct ITcpAcceptorListener
     {
-        virtual void HandleAccept(const boost::system::error_code& ec, 
-            boost::asio::ip::tcp::socket * socket) = 0;
+        virtual void HandleAccept(const std::error_code& ec, 
+			std::experimental::net::ip::tcp::socket * socket) = 0;
         virtual ~ITcpAcceptorListener()
         {
         }
@@ -19,28 +19,28 @@ namespace kit
     {
     public:
         TcpAcceptor(
-            boost::asio::io_service & io_service,
-            boost::uint16_t port,
-            boost::shared_ptr<ITcpAcceptorListener> listener);
+			std::experimental::net::io_context & io_context,
+            unsigned short port,
+            std::shared_ptr<ITcpAcceptorListener> listener);
 
     public:
         bool Listen();
-        void Accept(boost::asio::ip::tcp::socket * socket);
+        void Accept(std::experimental::net::ip::tcp::socket * socket);
         void Close();
     public:
-        boost::uint16_t GetHttpPort() const
+        unsigned short GetHttpPort() const
         {
             return port_;
         }
 
     protected:
-        virtual void HandleAccept(const boost::system::error_code& ec,
-            boost::asio::ip::tcp::socket * socket);
+        virtual void HandleAccept(const std::error_code& ec,
+			std::experimental::net::ip::tcp::socket * socket);
 
     private:
-        boost::asio::ip::tcp::acceptor acceptor_;
-        boost::uint16_t port_;
-        boost::shared_ptr<ITcpAcceptorListener> listener_;
+        std::experimental::net::ip::tcp::acceptor acceptor_;
+        unsigned short port_;
+        std::shared_ptr<ITcpAcceptorListener> listener_;
     };
 }
 #endif

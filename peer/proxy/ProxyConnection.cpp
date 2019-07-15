@@ -23,7 +23,7 @@ namespace peer
         http_server_->Recv();
     }
 
-    void ProxyConnection::HandleRecv(boost::shared_ptr<kit::HttpServer> http_server, const std::string & request)
+    void ProxyConnection::HandleRecv(std::shared_ptr<kit::HttpServer> http_server, const std::string & request)
     {
         std::string url;
         kit::Guid resource_id;
@@ -33,7 +33,7 @@ namespace peer
         http_server_->Recv();
     }
 
-    void ProxyConnection::Send(boost::shared_ptr<kit::Buffer> buffer)
+    void ProxyConnection::Send(std::shared_ptr<kit::Buffer> buffer)
     {
         http_server_->Send(buffer);
     }

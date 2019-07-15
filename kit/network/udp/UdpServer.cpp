@@ -1,42 +1,40 @@
-#include <boost/bind.hpp>
-#include <boost/thread.hpp>
-
 #include "kit/network/udp/UdpServer.h"
+#include <experimental/buffer>
 
 namespace kit
 {
-    UdpServer::UdpServer(boost::shared_ptr<IUdpServerListener> handler,
-        boost::asio::io_service & io_service)
+    UdpServer::UdpServer(std::shared_ptr<IUdpServerListener> handler,
+        std::experimental::net::io_context & io_context)
         : handler_(handler)
-        , socket_(io_service)
+        , socket_(io_context)
     {
     }
 
-    bool UdpServer::Listen(boost::uint16_t port)
+    bool UdpServer::Listen(unsigned short port)
     {
-        boost::system::error_code error;
-        socket_.open(boost::asio::ip::udp::v4(), error);
-        if (error)
+		std::error_code ec;
+        socket_.open(std::experimental::net::ip::udp::v4(), ec);
+        if (ec)
         {
-            socket_.close(error);
+            socket_.close(ec);
             return false;
         }
-        socket_.bind(boost::asio::ip::udp::endpoint(boost::asio::ip::udp::v4(), port), error);
-        if (!error)
+        socket_.bind(std::experimental::net::ip::udp::endpoint(std::experimental::net::ip::udp::v4(), port), ec);
+        if (!ec)
         {
             port_ = port;
             return true;
         }
         else
         {
-            socket_.close(error);
+            socket_.close(ec);
             return false;
         }
     }
 
-    void UdpServer::Recv(boost::uint32_t count)
+    void UdpServer::Recv(unsigned int count)
     {
-        for (boost::uint32_t i=0; i<20; i++)
+        for (unsigned int i=0; i<20; i++)
         {
             UdpRecvFrom();
         }
@@ -44,42 +42,40 @@ namespace kit
     
     void UdpServer::UdpRecvFrom()
     {
-        boost::shared_ptr<kit::Buffer> recv_buffer = kit::Buffer::Create(2048);
-        boost::shared_ptr<boost::asio::ip::udp::endpoint> endpoint(new boost::asio::ip::udp::endpoint());
+        std::shared_ptr<kit::Buffer> recv_buffer = kit::Buffer::Create(2048);
+        std::shared_ptr<std::experimental::net::v1::ip::udp::endpoint> endpoint(new std::experimental::net::v1::ip::udp::endpoint());
         recv_buffer->Clear();
 
-        socket_.async_receive_from(
-            boost::asio::buffer(recv_buffer->Data(), recv_buffer->RemainSize()),
-            *endpoint,
-            boost::bind(
+		socket_.async_receive_from(
+			std::experimental::net::buffer(recv_buffer->Data(), recv_buffer->RemainSize()),
+			*endpoint, 
+            std::bind(
                 &UdpServer::HandleUdpRecvFrom, 
                 shared_from_this(),
-                boost::asio::placeholders::error,
-                boost::asio::placeholders::bytes_transferred,
+                std::placeholders::_1,
+				std::placeholders::_2,
                 recv_buffer,
                 endpoint));
     }
 
-    void UdpServer::UdpSendTo(boost::shared_ptr<kit::Buffer> buffer, const boost::asio::ip::udp::endpoint & endpoint)
+    void UdpServer::UdpSendTo(std::shared_ptr<kit::Buffer> buffer, const std::experimental::net::v1::ip::udp::endpoint & endpoint)
     {
-        boost::system::error_code ec;
-
-        socket_.async_send_to(boost::asio::buffer(buffer->Data(), buffer->Length()), endpoint,
-            boost::bind(&UdpServer::HandleUdpSendTo, shared_from_this(),
-            boost::asio::placeholders::error,
-            boost::asio::placeholders::bytes_transferred,
-            buffer));
+		socket_.async_send_to(std::experimental::net::buffer(buffer->Data(), buffer->Length()), endpoint,
+			std::bind(&UdpServer::HandleUdpSendTo, shared_from_this(),
+				std::placeholders::_1,
+				std::placeholders::_2,
+				buffer));
     }
 
-    void UdpServer::HandleUdpSendTo(const boost::system::error_code & ec, std::size_t bytes_transferred,
-        boost::shared_ptr<kit::Buffer> send_buffer)
+    void UdpServer::HandleUdpSendTo(const std::error_code & ec, std::size_t bytes_transferred,
+        std::shared_ptr<kit::Buffer> send_buffer)
     {
 
     }
 
-    void UdpServer::HandleUdpRecvFrom(const boost::system::error_code & ec, std::size_t bytes_transferred,
-        boost::shared_ptr<kit::Buffer> recv_buffer,
-        boost::shared_ptr<boost::asio::ip::udp::endpoint> endpoint)
+    void UdpServer::HandleUdpRecvFrom(const std::error_code & ec, std::size_t bytes_transferred,
+        std::shared_ptr<kit::Buffer> recv_buffer,
+        std::shared_ptr<std::experimental::net::v1::ip::udp::endpoint> endpoint)
     {
         if (!ec)
         {
@@ -95,7 +91,7 @@ namespace kit
 
     void UdpServer::Close()
     {
-        boost::system::error_code ec;
+		std::error_code ec;
         socket_.close(ec);
     }
 }

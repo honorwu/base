@@ -4,7 +4,7 @@
 
 namespace kit
 {
-    boost::shared_ptr<LogggingModule> LogggingModule::instance_;
+    std::shared_ptr<LogggingModule> LogggingModule::instance_;
 
     const unsigned int LargeBufferSize = 4096;
 
@@ -36,14 +36,14 @@ namespace kit
 
         if (fp_)
         {
-            fread(&written_bytes_, sizeof(boost::uint32_t), 1, fp_);
+            fread(&written_bytes_, sizeof(unsigned int), 1, fp_);
             if (written_bytes_ < LogHeaderLength)
             {
                 written_bytes_ = LogHeaderLength;
             }
 
             fseek(fp_, 0, SEEK_END);
-            boost::uint32_t filesize = ftell(fp_);
+            unsigned int filesize = ftell(fp_);
 
             if (written_bytes_ > filesize)
             {
@@ -55,7 +55,7 @@ namespace kit
 
         thread_.Start();
 
-        timer_ = boost::shared_ptr<kit::Timer>(new kit::Timer(thread_.get_io_service(), 1000, shared_from_this()));
+        timer_ = std::shared_ptr<kit::Timer>(new kit::Timer(thread_.get_io_context(), 1000, shared_from_this()));
         timer_->Start();
 
         UpdateCurrentTimestamp();
@@ -84,7 +84,7 @@ namespace kit
         }
 
         std::string log(logline, length);
-        thread_.Post(boost::bind(&LogggingModule::AppendInThread, shared_from_this(), module, log));
+        thread_.Post(std::bind(&LogggingModule::AppendInThread, shared_from_this(), module, log));
     }
 
     void LogggingModule::SetLogLevel(LogLevel level)
@@ -133,7 +133,7 @@ namespace kit
         }
     }
 
-    void LogggingModule::OnTimerElapsed(boost::shared_ptr<Timer> pointer, unsigned int times)
+    void LogggingModule::OnTimerElapsed(std::shared_ptr<Timer> pointer, unsigned int times)
     {
         if (!fp_)
         {
@@ -156,7 +156,7 @@ namespace kit
 
         if (written_bytes_ + log_buffer_->Length() > roll_size_ - LogHeaderLength)
         {
-            boost::int32_t write_size = roll_size_  - LogHeaderLength - written_bytes_;
+            int write_size = roll_size_  - LogHeaderLength - written_bytes_;
             if (write_size > 0)
             {
                 fwrite(log_buffer_->Data(), write_size, 1, fp_);
@@ -172,7 +172,7 @@ namespace kit
             written_bytes_ += log_buffer_->Length();
             fseek(fp_, 0, SEEK_SET);
             char head_buffer[6] = "0000\n";
-            memcpy(head_buffer, &written_bytes_, sizeof(boost::uint32_t));
+            memcpy(head_buffer, &written_bytes_, sizeof(unsigned int));
             
             fwrite(&head_buffer, LogHeaderLength, 1, fp_);
             

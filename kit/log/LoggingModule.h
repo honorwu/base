@@ -3,13 +3,12 @@
 
 #include <string>
 #include <set>
+#include <memory>
 #include "kit/thread/CommonThread.h"
 #include "kit/timer/Timer.h"
 #include "kit/buffer/Buffer.h"
 #include "LogStream.h"
 #include "Logger.h"
-
-#include <boost/shared_ptr.hpp>
 
 #define LOG_DEBUG(module, message) \
     if (kit::LogggingModule::Instance().GetLogLevel() <= kit::TRACE) \
@@ -24,7 +23,7 @@
 namespace kit
 {
     class LogggingModule
-        : public boost::enable_shared_from_this<LogggingModule>
+        : public std::enable_shared_from_this<LogggingModule>
         , public kit::ITimerListener
     {
     public:
@@ -61,7 +60,7 @@ namespace kit
 
         bool ParseConfigIfExist();
 
-        virtual void OnTimerElapsed(boost::shared_ptr<Timer> pointer, unsigned int times);
+        virtual void OnTimerElapsed(std::shared_ptr<Timer> pointer, unsigned int times);
 
     private:
         void UpdateCurrentTimestamp();
@@ -76,13 +75,13 @@ namespace kit
         std::string file_path_;
         size_t roll_size_;
 
-        static boost::shared_ptr<LogggingModule> instance_;
+        static std::shared_ptr<LogggingModule> instance_;
 
         kit::CommonThread thread_;
 
-        boost::shared_ptr<kit::Timer> timer_;
+        std::shared_ptr<kit::Timer> timer_;
 
-        boost::shared_ptr<kit::Buffer> log_buffer_;
+        std::shared_ptr<kit::Buffer> log_buffer_;
 
         size_t written_bytes_;
 

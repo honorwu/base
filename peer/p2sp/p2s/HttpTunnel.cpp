@@ -4,7 +4,7 @@ namespace peer
 {
     void HttpTunnel::Start()
     {
-        http_client_ = kit::HttpClient::Create(boost::asio::io_service(), url_, shared_from_this());
+        http_client_ = kit::HttpClient::Create(std::experimental::net::io_context(), url_, shared_from_this());
     }
 
     void HttpTunnel::Stop()
@@ -23,12 +23,12 @@ namespace peer
 
     }
 
-    void HttpTunnel::HandleConnect(const boost::system::error_code & ec)
+    void HttpTunnel::HandleConnect(const std::error_code & ec)
     {
 
     }
 
-    void HttpTunnel::HandleRecvHttpResponse(boost::shared_ptr<kit::HttpResponse> http_response)
+    void HttpTunnel::HandleRecvHttpResponse(std::shared_ptr<kit::HttpResponse> http_response)
     {
         switch (http_response->GetStatusCode())
         {
@@ -42,8 +42,8 @@ namespace peer
         }
     }
 
-    void HttpTunnel::HandleRecvHttpData(const boost::system::error_code & ec,
-        boost::shared_ptr<kit::Buffer> buffer)
+    void HttpTunnel::HandleRecvHttpData(const std::error_code & ec,
+        std::shared_ptr<kit::Buffer> buffer)
     {
 
     }

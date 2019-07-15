@@ -1,10 +1,11 @@
 #include "HttpResponse.h"
+#include <assert.h>
 
 namespace kit
 {
-    boost::shared_ptr<HttpResponse> HttpResponse::ParseFromBuffer(std::string response)
+    std::shared_ptr<HttpResponse> HttpResponse::ParseFromBuffer(std::string response)
     {
-        return boost::shared_ptr<HttpResponse>(new HttpResponse(response));
+        return std::shared_ptr<HttpResponse>(new HttpResponse(response));
     }
 
     void HttpResponse::Pause(std::string response)

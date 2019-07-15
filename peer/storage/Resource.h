@@ -2,7 +2,6 @@
 #define _PEER_RESOURCE_H_
 
 #include "peer/p2sp/Protocol.h"
-#include <boost/shared_ptr.hpp>
 #include "kit/buffer/Buffer.h"
 #include "kit/base/Guid.h"
 #include <set>
@@ -22,15 +21,15 @@ namespace peer
 
         }
 
-        void AttachDownloader(boost::shared_ptr<Downloader> downloader);
-        void DetachDownloader(boost::shared_ptr<Downloader> downloader);
+        void AttachDownloader(std::shared_ptr<Downloader> downloader);
+        void DetachDownloader(std::shared_ptr<Downloader> downloader);
 
-        void AddPiece(const PieceInfo & piece, boost::shared_ptr<kit::Buffer> buffer);
+        void AddPiece(const PieceInfo & piece, std::shared_ptr<kit::Buffer> buffer);
         void PushHttpResponseData();
     private:
         kit::Guid & resource_id_;
-        std::vector<boost::shared_ptr<Chunk> > chunks_;
-        std::set<boost::shared_ptr<Downloader> > downloaders_;
+        std::vector<std::shared_ptr<Chunk> > chunks_;
+        std::set<std::shared_ptr<Downloader> > downloaders_;
     };
 }
 

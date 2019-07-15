@@ -1,9 +1,8 @@
 #ifndef _KIT_BYTESPEEDMETER_H_
 #define _KIT_BYTESPEEDMETER_H_
 
-#include <boost/cstdint.hpp>
-#include <boost/timer.hpp>
 #include <string.h>
+#include "kit/timer/TickCounter.h"
 
 namespace kit
 {
@@ -22,57 +21,57 @@ namespace kit
 
     public:
 
-        void SubmitBytes(boost::uint32_t bytes);
+        void SubmitBytes(unsigned int bytes);
 
-        boost::uint32_t AverageByteSpeed() const;  // bytes per second
+		unsigned int AverageByteSpeed() const;  // bytes per second
 
-        boost::uint32_t SecondByteSpeed();  // 1 second
+		unsigned int SecondByteSpeed();  // 1 second
 
-        boost::uint32_t CurrentByteSpeed();  // 5 seconds
+		unsigned int CurrentByteSpeed();  // 5 seconds
 
-        boost::uint32_t RecentByteSpeed();  // 20 seconds
+		unsigned int RecentByteSpeed();  // 20 seconds
 
-        boost::uint32_t RecentMinuteByteSpeed();  // 1 minute
+		unsigned int RecentMinuteByteSpeed();  // 1 minute
 
-        inline boost::uint32_t GetElapsedTimeInSeconds() const;
+        inline unsigned int GetElapsedTimeInSeconds() const;
 
-        boost::uint32_t TotalBytes() const;
+		unsigned int TotalBytes() const;
 
     private:
 
-        static boost::uint32_t GetPositionFromSeconds(boost::uint32_t seconds);
+        static unsigned int GetPositionFromSeconds(unsigned int seconds);
 
         inline void CheckTickCount();
 
-        inline void UpdateTickCount(boost::uint32_t curr_sec);
+        inline void UpdateTickCount(unsigned int curr_sec);
 
-        inline boost::uint32_t CalcSpeedInDuration(boost::uint32_t duration);
-
-    private:
-
-        static const boost::uint32_t SECONDS_IN_SECOND = 1;
-
-        static const boost::uint32_t SECONDS_IN_RECENT = 5;
-
-        static const boost::uint32_t SECONDS_IN_RECENT_20SEC = 20;
-
-        static const boost::uint32_t SECONDS_IN_MINUTE = 60;
-
-        static const boost::uint32_t HISTORY_INTERVAL_IN_SEC = SECONDS_IN_MINUTE;
+        inline unsigned int CalcSpeedInDuration(unsigned int duration);
 
     private:
-        boost::timer tick_count_;
 
-        boost::uint32_t total_bytes_;
+        static const unsigned int SECONDS_IN_SECOND = 1;
 
-        boost::uint32_t history_bytes_[HISTORY_INTERVAL_IN_SEC];
+        static const unsigned int SECONDS_IN_RECENT = 5;
 
-        boost::uint32_t current_sec_;
+        static const unsigned int SECONDS_IN_RECENT_20SEC = 20;
+
+        static const unsigned int SECONDS_IN_MINUTE = 60;
+
+        static const unsigned int HISTORY_INTERVAL_IN_SEC = SECONDS_IN_MINUTE;
+
+    private:
+        kit::TickCounter tick_count_;
+
+		unsigned int total_bytes_;
+
+		unsigned int history_bytes_[HISTORY_INTERVAL_IN_SEC];
+
+		unsigned int current_sec_;
 
         bool is_running_;
     };
 
-    inline void ByteSpeedMeter::SubmitBytes(boost::uint32_t bytes)
+    inline void ByteSpeedMeter::SubmitBytes(unsigned int bytes)
     {
         CheckTickCount();
         total_bytes_ += bytes;
@@ -81,13 +80,13 @@ namespace kit
 
     inline void ByteSpeedMeter::CheckTickCount()
     {
-        boost::uint32_t curr_sec = tick_count_.elapsed() / 1000;
+		unsigned int curr_sec = tick_count_.Elapsed() / 1000;
         if (curr_sec == current_sec_)
             return;
         UpdateTickCount(curr_sec);
     }
 
-    inline void ByteSpeedMeter::UpdateTickCount(boost::uint32_t curr_sec)
+    inline void ByteSpeedMeter::UpdateTickCount(unsigned int curr_sec)
     {
         if (curr_sec - current_sec_ >= HISTORY_INTERVAL_IN_SEC)
         {
@@ -95,32 +94,32 @@ namespace kit
         }
         else
         {
-            for (boost::uint32_t i = curr_sec; i > current_sec_; i--)
+            for (unsigned int i = curr_sec; i > current_sec_; i--)
                 history_bytes_[GetPositionFromSeconds(i)] = 0;
         }
 
         current_sec_ = curr_sec;
     }
 
-    inline boost::uint32_t ByteSpeedMeter::CalcSpeedInDuration(boost::uint32_t duration)
+    inline unsigned int ByteSpeedMeter::CalcSpeedInDuration(unsigned int duration)
     {
         CheckTickCount();
 
-        boost::int64_t bytes_in_recent = 0;
-        boost::uint32_t last_sec = current_sec_ - 1;
-        for (boost::uint32_t i = last_sec; i > last_sec - duration; i--)
+		unsigned __int64 bytes_in_recent = 0;
+		unsigned int last_sec = current_sec_ - 1;
+        for (unsigned int i = last_sec; i > last_sec - duration; i--)
             bytes_in_recent += history_bytes_[GetPositionFromSeconds(i)];
 
-        boost::uint32_t elapsed_time = GetElapsedTimeInSeconds();
+		unsigned int elapsed_time = GetElapsedTimeInSeconds();
         if (elapsed_time > duration)
-            return static_cast<boost::uint32_t>(bytes_in_recent / duration);
+            return static_cast<unsigned int>(bytes_in_recent / duration);
         else
-            return static_cast<boost::uint32_t>(bytes_in_recent / elapsed_time);
+            return static_cast<unsigned int>(bytes_in_recent / elapsed_time);
     }
 
-    inline boost::uint32_t ByteSpeedMeter::GetElapsedTimeInSeconds() const
+    inline unsigned int ByteSpeedMeter::GetElapsedTimeInSeconds() const
     {
-        boost::uint32_t s = tick_count_.elapsed() / 1000;
+		unsigned int s = tick_count_.Elapsed() / 1000;
         return s <= 0 ? 1 : s;
     }
 }

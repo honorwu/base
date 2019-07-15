@@ -1,17 +1,18 @@
 #include "HttpServer.h"
 #include <string>
-#include <boost/bind.hpp>
 
 namespace kit
 {
     void HttpServer::Recv()
     {
         std::string delim("\r\n\r\n");
-        boost::asio::async_read_until(*socket_, request_, delim, boost::bind(&HttpServer::HandleRecv,
-            shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		std::experimental::net::async_read_until(*socket_, 
+			std::experimental::net::dynamic_buffer(request_), delim,
+			std::bind(&HttpServer::HandleRecv,
+            shared_from_this(), std::placeholders::_1, std::placeholders::_2));
     }
 
-    void HttpServer::HandleRecv(const boost::system::error_code& ec, boost::uint32_t bytes_transferred)
+    void HttpServer::HandleRecv(const std::error_code& ec, unsigned int bytes_transferred)
     {
         if (ec)
         {
@@ -19,32 +20,26 @@ namespace kit
             return;
         }
 
-        std::string request_string;
-        std::copy(std::istreambuf_iterator<char>(&request_), std::istreambuf_iterator<char>(), std::back_inserter(request_string));
-
-        listener_->HandleRecv(shared_from_this(), request_string);
+        listener_->HandleRecv(shared_from_this(), request_);
 
         Recv();
     }
 
-    void HttpServer::Send(boost::shared_ptr<kit::Buffer> buffer)
+    void HttpServer::Send(std::shared_ptr<kit::Buffer> buffer)
     {
         bool is_send_list_empty = send_list_.empty();
         send_list_.push_back(buffer);
 
         if (is_send_list_empty)
         {
-            boost::asio::async_write(
-                *socket_,
-                boost::asio::buffer(buffer->Data(), buffer->Length()),
-                boost::asio::transfer_at_least(buffer->Length()),
-                boost::bind(&HttpServer::HandleSend, shared_from_this(),
-                boost::asio::placeholders::error,
-                boost::asio::placeholders::bytes_transferred));
+			socket_->async_send(std::experimental::net::buffer(buffer->Data(), buffer->Length()),
+				std::bind(&HttpServer::HandleSend, shared_from_this(),
+					std::placeholders::_1,
+					std::placeholders::_2));
         }
     }
 
-    void HttpServer::HandleSend(const boost::system::error_code& ec, boost::uint32_t bytes_transferred)
+    void HttpServer::HandleSend(const std::error_code& ec, unsigned int bytes_transferred)
     {
         if (ec)
         {
@@ -55,9 +50,11 @@ namespace kit
 
         if (!send_list_.empty())
         {
-            boost::asio::async_write(*socket_, boost::asio::buffer(send_list_.front()->Data(), send_list_.front()->Length()),
-                boost::asio::transfer_at_least(send_list_.front()->Length()), boost::bind(&HttpServer::HandleSend,
-                shared_from_this(), boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+			std::experimental::net::async_write(*socket_, 
+				std::experimental::net::buffer(send_list_.front()->Data(), send_list_.front()->Length()),
+				std::experimental::net::transfer_at_least(send_list_.front()->Length()),
+				std::bind(&HttpServer::HandleSend,
+                shared_from_this(), std::placeholders::_1, std::placeholders::_2));
         }
         else if (close_status_ == WillClose)
         {
@@ -74,7 +71,7 @@ namespace kit
 
         if (send_list_.empty())
         {
-            boost::system::error_code ec;
+            std::error_code ec;
             socket_->close(ec);
             listener_.reset();
             close_status_ = Closed;

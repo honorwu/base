@@ -10,7 +10,7 @@ namespace kit
 
     void UrlParser::Parse()
     {
-		boost::uint32_t begin_pos = 0, end_pos = 0;
+		unsigned int begin_pos = 0, end_pos = 0;
 
 		begin_pos = url_.find(':', 0);
 		end_pos = url_.find('/', 0);

@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="peer.h" />
     <ClInclude Include="proxy\ProxyModule.h">
       <Filter>proxy</Filter>
     </ClInclude>
@@ -33,9 +32,9 @@
     <ClInclude Include="storage\Chunk.h">
       <Filter>storage</Filter>
     </ClInclude>
+    <ClInclude Include="peer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="peer.cpp" />
     <ClCompile Include="proxy\ProxyModule.cpp">
       <Filter>proxy</Filter>
     </ClCompile>
@@ -64,6 +63,7 @@
     <ClCompile Include="storage\Chunk.cpp">
       <Filter>storage</Filter>
     </ClCompile>
+    <ClCompile Include="peer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="p2sp">

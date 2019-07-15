@@ -1,57 +1,56 @@
 #ifndef _KIT_UDPSERVER_H_
 #define _KIT_UDPSERVER_H_
-
-#include <boost/asio.hpp>
-#include <boost/enable_shared_from_this.hpp>
+#include <experimental/net>
+#include <experimental/io_context>
 #include "kit/buffer/Buffer.h"
-#include "kit/thread/CommonThread.h"
 
 namespace kit
 {
     struct IUdpServerListener
     {
-        virtual void OnUdpRecv(boost::shared_ptr<kit::Buffer> buffer,
-            boost::shared_ptr<boost::asio::ip::udp::endpoint> end_point) = 0;
+        virtual void OnUdpRecv(std::shared_ptr<kit::Buffer> buffer,
+            std::shared_ptr<std::experimental::net::ip::udp::endpoint> end_point) = 0;
         virtual ~IUdpServerListener() {}
     };
 
     class UdpServer
-        : public boost::enable_shared_from_this<UdpServer>
+        : public std::enable_shared_from_this<UdpServer>
     {
     public:
         
-        static boost::shared_ptr<UdpServer> create(boost::shared_ptr<IUdpServerListener> handler, boost::asio::io_service & io_service)
+        static std::shared_ptr<UdpServer> create(std::shared_ptr<IUdpServerListener> handler, std::experimental::net::io_context& io_context)
         {
-            return boost::shared_ptr<UdpServer>(new UdpServer(handler, io_service));
+            return std::shared_ptr<UdpServer>(new UdpServer(handler, io_context));
         }
 
     public:
-        bool Listen(boost::uint16_t port);
-        void Recv(boost::uint32_t count);
+        bool Listen(unsigned short port);
+        void Recv(unsigned int count);
         void UdpRecvFrom();
-        void UdpSendTo(boost::shared_ptr<kit::Buffer> buffer, const boost::asio::ip::udp::endpoint & endpoint);
+        void UdpSendTo(std::shared_ptr<kit::Buffer> buffer, const std::experimental::net::v1::ip::udp::endpoint & endpoint);
         void Close();
 
-        boost::uint16_t GetPort() const
+        unsigned short GetPort() const
         {
             return port_;
         }
 
     protected:
-        void HandleUdpRecvFrom(const boost::system::error_code & ec, std::size_t bytes_transferred,
-            boost::shared_ptr<kit::Buffer> recv_buffer,
-            boost::shared_ptr<boost::asio::ip::udp::endpoint> endpoint);
+        void HandleUdpRecvFrom(const std::error_code & ec, std::size_t bytes_transferred,
+            std::shared_ptr<kit::Buffer> recv_buffer,
+            std::shared_ptr<std::experimental::net::v1::ip::udp::endpoint> endpoint);
 
-        void HandleUdpSendTo(const boost::system::error_code & ec, std::size_t bytes_transferred,
-            boost::shared_ptr<kit::Buffer> send_buffer);
-
-    private:
-        UdpServer(boost::shared_ptr<IUdpServerListener> handler, boost::asio::io_service & io_service);
+        void HandleUdpSendTo(const std::error_code & ec, std::size_t bytes_transferred,
+            std::shared_ptr<kit::Buffer> send_buffer);
 
     private:
-        boost::asio::ip::udp::socket socket_;
-        boost::shared_ptr<IUdpServerListener> handler_;
-        boost::uint16_t port_;
+        UdpServer(std::shared_ptr<IUdpServerListener> handler, 
+			std::experimental::net::io_context & io_context);
+
+    private:
+		std::experimental::net::ip::udp::socket socket_;
+        std::shared_ptr<IUdpServerListener> handler_;
+        unsigned short port_;
     };
 }
 

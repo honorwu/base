@@ -1,21 +1,17 @@
 #ifndef _KIT_GUID_H_
 #define _KIT_GUID_H_
 
-#include <boost/static_assert.hpp>
-#include <boost/array.hpp>
-#include <boost/cstdint.hpp>
+#include <string>
 
 namespace kit
 {
     struct GuidStruct
     {
-        boost::uint32_t Data1;
-        boost::uint16_t Data2;
-        boost::uint16_t Data3;
-        boost::uint8_t Data4[8];
+        unsigned int Data1;
+        unsigned short Data2;
+        unsigned short Data3;
+        unsigned char Data4[8];
     };
-
-    BOOST_STATIC_ASSERT(sizeof(GuidStruct) == 16);
 
     class Base16
     {

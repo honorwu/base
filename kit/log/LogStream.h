@@ -37,7 +37,7 @@ namespace kit
             buffer_->Append(data, len);
         }
 
-        boost::shared_ptr<kit::Buffer> buffer()
+        std::shared_ptr<kit::Buffer> buffer()
         {
             return buffer_;
         }
@@ -46,7 +46,7 @@ namespace kit
         template<typename T>
         void formatInteger(T);
 
-        boost::shared_ptr<kit::Buffer> buffer_;
+        std::shared_ptr<kit::Buffer> buffer_;
 
         static const int MaxNumericSize = 16;
     };

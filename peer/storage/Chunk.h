@@ -2,7 +2,6 @@
 #define _PEER_CHUNK_H_
 
 #include "kit/buffer/Buffer.h"
-#include <boost/shared_ptr.hpp>
 #include <vector>
 
 namespace peer
@@ -15,13 +14,13 @@ namespace peer
         {
 
         }
-        void SetPiece(unsigned int piece_index, boost::shared_ptr<kit::Buffer> buffer);
-        boost::shared_ptr<kit::Buffer> GetPiece(unsigned int piece_index);
+        void SetPiece(unsigned int piece_index, std::shared_ptr<kit::Buffer> buffer);
+        std::shared_ptr<kit::Buffer> GetPiece(unsigned int piece_index);
 
         unsigned int GetChunkSize();
     private:
         unsigned int chunk_id_;
-        std::vector<boost::shared_ptr<kit::Buffer> > pieces_;
+        std::vector<std::shared_ptr<kit::Buffer> > pieces_;
     };
 }
 

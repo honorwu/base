@@ -1,43 +1,31 @@
 #include "HttpClient.h"
 #include "kit/network/http/UrlParser.h"
-#include <boost/bind.hpp>
-#include <boost/lexical_cast.hpp>
+#include "experimental/net"
 
 namespace kit
 {
     void HttpClient::Connect()
     {
-        boost::system::error_code ec;
-        boost::asio::ip::address_v4 server_address = boost::asio::ip::address_v4::from_string(url_parser_.GetHost(), ec);
+		std::error_code ec;
+		std::experimental::net::ip::address server_address = std::experimental::net::ip::make_address(url_parser_.GetHost(), ec);
 
-        if (ec)
-        {
-            Resolve();
-            return;
-        }
+		if (ec)
+		{
+			Resolve();
+			return;
+		}
 
-        boost::asio::ip::tcp::resolver::iterator resolver_iterator;
-        boost::asio::ip::tcp::endpoint endpoint = boost::asio::ip::tcp::endpoint(server_address, atoi(url_parser_.GetPort().c_str()));
+		std::experimental::net::ip::tcp::endpoint endpoint = std::experimental::net::ip::tcp::endpoint(server_address, 
+			atoi(url_parser_.GetPort().c_str()));
 
-        socket_.async_connect(endpoint, boost::bind(&HttpClient::HandleConnect, shared_from_this(),
-            boost::asio::placeholders::error, resolver_iterator));
+		socket_.async_connect(endpoint, std::bind(&HttpClient::HandleConnect, this,
+			std::placeholders::_1));
     }
 
-    void HttpClient::HandleConnect(const boost::system::error_code & ec, boost::asio::ip::tcp::resolver::iterator endpoint_iterator)
+    void HttpClient::HandleConnect(const std::error_code & ec)
     {
         if (ec)
         {
-            if (endpoint_iterator == boost::asio::ip::tcp::resolver::iterator())
-            {
-                listener_->HandleConnect(ec);
-                return;
-            }
-
-            boost::asio::ip::tcp::endpoint endpoint = *endpoint_iterator;
-
-            socket_.async_connect(endpoint, boost::bind(&HttpClient::HandleConnect, shared_from_this(),
-                boost::asio::placeholders::error, ++endpoint_iterator));
-
             return;
         }
 
@@ -46,23 +34,21 @@ namespace kit
 
     void HttpClient::Resolve()
     {
-        boost::asio::ip::tcp::resolver::query query(boost::asio::ip::tcp::v4(), url_parser_.GetHost(), url_parser_.GetPort());
-
-        resolver_.async_resolve(query, boost::bind(&HttpClient::HandleResolve, shared_from_this(),
-            boost::asio::placeholders::error, boost::asio::placeholders::iterator));
+		resolver_.async_resolve(url_parser_.GetHost(), "http", std::bind(&HttpClient::HandleResolve, this,
+			std::placeholders::_1, std::placeholders::_2));
     }
 
-    void HttpClient::HandleResolve(const boost::system::error_code & ec, boost::asio::ip::tcp::resolver::iterator endpoint_iterator)
+    void HttpClient::HandleResolve(const std::error_code & ec,
+		const std::experimental::net::ip::tcp::resolver::results_type& endpoints)
     {
-        if (ec)
-        {
-            return;
-        }
+		if (ec)
+		{
+			return;
+		}
 
-        boost::asio::ip::tcp::endpoint endpoint = *endpoint_iterator;
-
-        socket_.async_connect(endpoint, boost::bind(&HttpClient::HandleConnect, shared_from_this(),
-            boost::asio::placeholders::error, ++endpoint_iterator));
+		std::experimental::net::async_connect(socket_, endpoints,
+			std::bind(&HttpClient::HandleConnect, this,
+				std::placeholders::_1));
     }
 
     void HttpClient::SendHttpRequest(unsigned int range_begin, unsigned int range_end)
@@ -83,15 +69,15 @@ namespace kit
 
         std::string request_string = sstr.str();
 
-        boost::shared_ptr<kit::Buffer> buffer = kit::Buffer::Create(request_string.length());
+        std::shared_ptr<kit::Buffer> buffer = kit::Buffer::Create(request_string.length());
         buffer->Append(request_string.c_str(), request_string.length());
 
-        boost::asio::async_write(socket_, boost::asio::buffer(buffer->Data(), buffer->Length()),
-            boost::bind(&HttpClient::HandleSendHttpRequest, shared_from_this(),
-                boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		std::experimental::net::async_write(socket_, std::experimental::net::buffer(buffer->Data(), buffer->Length()),
+            std::bind(&HttpClient::HandleSendHttpRequest, shared_from_this(),
+                std::placeholders::_1, std::placeholders::_2));
     }
 
-    void HttpClient::HandleSendHttpRequest(const boost::system::error_code& ec, size_t bytes_transferred)
+    void HttpClient::HandleSendHttpRequest(const std::error_code& ec, size_t bytes_transferred)
     {
         RecvHttpHeader();
     }
@@ -99,21 +85,18 @@ namespace kit
     void HttpClient::RecvHttpHeader()
     {
         std::string delim("\r\n\r\n");
-        boost::asio::async_read_until(socket_, response_,
-            delim, boost::bind(&HttpClient::HandleRecvHttpHeader, shared_from_this(),
-                boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		std::experimental::net::async_read_until(socket_, 
+			std::experimental::net::dynamic_buffer(response_),
+            delim, std::bind(&HttpClient::HandleRecvHttpHeader, shared_from_this(),
+                std::placeholders::_1, std::placeholders::_2));
     }
 
-    void HttpClient::HandleRecvHttpHeader(const boost::system::error_code& ec, size_t bytes_transferred)
+    void HttpClient::HandleRecvHttpHeader(const std::error_code& ec, size_t bytes_transferred)
     {
         assert(bytes_transferred <= response_.size());
-        std::string response_string;
-        std::istream is(&response_);
-        response_string.resize(bytes_transferred);
-        is.read((char*)&response_string[0], bytes_transferred);
 
-        boost::shared_ptr<kit::HttpResponse> http_response =
-            kit::HttpResponse::ParseFromBuffer(response_string);
+        std::shared_ptr<kit::HttpResponse> http_response =
+            kit::HttpResponse::ParseFromBuffer(response_);
 
         listener_->HandleRecvHttpResponse(http_response);
     }
@@ -125,25 +108,28 @@ namespace kit
         unsigned int offset = 0;
         if (response_.size() > piece_size)
         {
-            std::istream is(&response_);
-            is.read((char*)recv_buffer_->Data(), piece_size);
-            HandleRecvHttpData(boost::system::error_code(), piece_size);
+			memcpy(recv_buffer_->Data(), response_.c_str(), piece_size);
+			response_.erase(0, piece_size);
+
+            HandleRecvHttpData(std::error_code(), piece_size);
         }
         else if (response_.size() > 0)
         {
-            std::istream is(&response_);
             offset = response_.size();
-            is.read((char*)recv_buffer_->Data(), response_.size());
+
+			memcpy(recv_buffer_->Data(), response_.c_str(), offset);
             recv_buffer_->SetLength(offset);
+
+			response_.erase(0, piece_size);
         }
 
-        boost::asio::async_read(socket_, boost::asio::buffer(recv_buffer_->Data() + offset, recv_buffer_->RemainSize() - offset),
-            boost::asio::transfer_at_least(recv_buffer_->RemainSize() - offset),
-            boost::bind(&HttpClient::HandleRecvHttpData, shared_from_this(),
-                boost::asio::placeholders::error, boost::asio::placeholders::bytes_transferred));
+		std::experimental::net::async_read(socket_, std::experimental::net::buffer(recv_buffer_->Data() + offset, recv_buffer_->RemainSize() - offset),
+			std::experimental::net::transfer_at_least(recv_buffer_->RemainSize() - offset),
+            std::bind(&HttpClient::HandleRecvHttpData, shared_from_this(),
+                std::placeholders::_1, std::placeholders::_2));
     }
 
-    void HttpClient::HandleRecvHttpData(const boost::system::error_code& ec, size_t bytes_transferred)
+    void HttpClient::HandleRecvHttpData(const std::error_code& ec, size_t bytes_transferred)
     {
         recv_buffer_->SetLength(recv_buffer_->Length() + bytes_transferred);
         listener_->HandleRecvHttpData(ec, recv_buffer_);
@@ -151,8 +137,8 @@ namespace kit
 
     void HttpClient::Close()
     {
-        boost::system::error_code ec;
-        socket_.shutdown(boost::asio::socket_base::shutdown_both, ec);
+        std::error_code ec;
+        socket_.shutdown(std::experimental::net::socket_base::shutdown_both, ec);
         socket_.close(ec);
 
         listener_.reset();

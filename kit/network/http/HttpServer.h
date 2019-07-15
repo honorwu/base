@@ -1,11 +1,10 @@
 #ifndef _KIT_HTTP_SERVER_H_
 #define _KIT_HTTP_SERVER_H_
 
-#include <boost/enable_shared_from_this.hpp>
-#include <boost/asio.hpp>
-
 #include "kit/buffer/Buffer.h"
 #include <list>
+#include "experimental/net"
+#include "experimental/buffer"
 
 namespace kit
 {
@@ -13,7 +12,7 @@ namespace kit
 
     struct IHttpServerListener
     {
-        virtual void HandleRecv(boost::shared_ptr<kit::HttpServer> http_server, const std::string & request) = 0;
+        virtual void HandleRecv(std::shared_ptr<kit::HttpServer> http_server, const std::string & request) = 0;
         virtual ~IHttpServerListener()
         {}
     };
@@ -26,11 +25,11 @@ namespace kit
     };
 
     class HttpServer
-        : public boost::enable_shared_from_this<HttpServer>
+        : public std::enable_shared_from_this<HttpServer>
     {
     public:
-        HttpServer(boost::asio::ip::tcp::socket * socket,
-            boost::shared_ptr<IHttpServerListener> listener)
+        HttpServer(std::experimental::net::ip::tcp::socket * socket,
+            std::shared_ptr<IHttpServerListener> listener)
             : socket_(socket)
             , listener_(listener)
             , close_status_(Pending)
@@ -39,23 +38,24 @@ namespace kit
         }
 
         void Recv();
-        void Send(boost::shared_ptr<kit::Buffer> buffer);
+        void Send(std::shared_ptr<kit::Buffer> buffer);
         void Close();
-        boost::asio::ip::tcp::endpoint GetRemoteEndpint()
+		std::experimental::net::ip::tcp::endpoint GetRemoteEndpint()
         {
             return socket_->remote_endpoint();
         }
 
     private:
-        void HandleRecv(const boost::system::error_code& ec, boost::uint32_t bytes_transferred);
-        void HandleSend(const boost::system::error_code& ec, boost::uint32_t bytes_transferred);
+        void HandleRecv(const std::error_code& ec, unsigned int bytes_transferred);
+        void HandleSend(const std::error_code& ec, unsigned int bytes_transferred);
 
     private:
-        boost::asio::streambuf request_;
-        boost::asio::ip::tcp::socket * socket_;
-        std::list<boost::shared_ptr<kit::Buffer> > send_list_;
-        boost::shared_ptr<IHttpServerListener> listener_;
-        boost::uint32_t close_status_;
+		//std::experimental::net::basic_socket_streambuf request_;
+		std::string request_;
+		std::experimental::net::ip::tcp::socket * socket_;
+        std::list<std::shared_ptr<kit::Buffer>> send_list_;
+        std::shared_ptr<IHttpServerListener> listener_;
+        unsigned int close_status_;
     };
 }
 

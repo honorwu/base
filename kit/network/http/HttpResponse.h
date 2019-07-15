@@ -2,14 +2,13 @@
 #define _KIT_HTTP_RESPONSE_H_
 
 #include <string>
-#include <boost/shared_ptr.hpp>
-
+#include <memory>
 namespace kit
 {
     class HttpResponse
     {
     public:
-        static boost::shared_ptr<HttpResponse> ParseFromBuffer(std::string response);
+        static std::shared_ptr<HttpResponse> ParseFromBuffer(std::string response);
 
         unsigned int GetStatusCode();
         unsigned int GetContentLength();
